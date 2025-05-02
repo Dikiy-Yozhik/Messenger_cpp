@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Messenger</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="messenger">
+        <!-- Боковая панель с чатами -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <input type="text" class="search" placeholder="Поиск">
+            </div>
+            <div class="chat-list">
+                <!-- Пример чата -->
+                <div class="chat-item active">
+                    <div class="chat-avatar"></div>
+                    <div class="chat-info">
+                        <div class="chat-name">Иван Иванов</div>
+                        <div class="chat-last-message">Привет, как дела?</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">12:30</div>
+                        <div class="chat-unread">2</div>
+                    </div>
+                </div>
+                <!-- Ещё чаты... -->
+            </div>
+        </div>
+        
+        <!-- Область сообщений -->
+        <div class="message-area">
+            <div class="message-header">
+                <div class="message-contact">
+                    <div class="contact-avatar"></div>
+                    <div class="contact-name">Иван Иванов</div>
+                </div>
+            </div>
+            
+            <div class="messages">
+                <!-- Пример сообщений -->
+                <div class="message incoming">
+                    <div class="message-text">Привет, как дела?</div>
+                    <div class="message-time">12:30</div>
+                </div>
+                
+                <div class="message outgoing">
+                    <div class="message-text">Привет! Всё отлично, спасибо!</div>
+                    <div class="message-time">12:32</div>
+                </div>
+            </div>
+            
+            <div class="message-input">
+                <input type="text" placeholder="Введите сообщение...">
+                <button class="send-button">Отправить</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

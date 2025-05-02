@@ -1,0 +1,83 @@
+chat_server/
+├── core/               # Базовые компоненты сервера
+│   ├── iocp_core.h     # IOCP-обёртка (инициализация, потоки)
+│   ├── socket_utils.h  # Помощники для работы с сокетами
+│   └── logging.h       # Логирование (spdlog или кастомное)
+├── net/                # Сетевая подсистема
+│   ├── websocket/      # WebSocket-обработка
+│   │   ├── frame.h     # Парсинг WS-фреймов
+│   │   └── handler.h   # Обработка WS-сообщений
+│   └── http/          # HTTP-сервер (если нужно REST)
+│       ├── router.h    # Маршрутизация запросов
+│       └── parser.h    # Парсинг HTTP
+├── db/                 # Работа с БД
+│   ├── database.h      # Обёртка над SQLite
+│   ├── models/        # Модели данных
+│   │   ├── user.h
+│   │   ├── message.h
+│   │   └── chat.h
+│   └── repository/    # Паттерн "Репозиторий"
+│       ├── user_repo.h
+│       └── message_repo.h
+├── auth/               # Аутентификация
+│   ├── auth_service.h  # Логин/регистрация
+│   └── jwt.h          # Генерация/верификация токенов
+├── chat/               # Логика чатов
+│   ├── chat_manager.h  # Управление комнатами
+│   ├── dm_chat.h       # Личные сообщения
+│   └── group_chat.h    # Групповые чаты
+└── server.h           # Главный класс сервера (сборка всех компонентов)
+
+
+
+Ключевые компоненты и их ответственность
+1. Ядро (core/)
+iocp_core.h: Управление IOCP (потоки, очередь завершения).
+
+socket_utils.h: Помощники для setsockopt, bind, etc.
+
+logging.h: Единый логгер для всего сервера.
+
+2. Сеть (net/)
+WebSocket:
+
+frame.h: Парсинг фреймов (opcode, маскирование).
+
+handler.h: Маршрутизация сообщений (например, "message" → в чат).
+
+HTTP (опционально):
+
+Для REST API, если нужна совместимость с мобильными клиентами.
+
+3. База данных (db/)
+database.h: Главный класс для работы с SQLite (пул соединений).
+
+models/: Структуры данных (например, struct User { id, name }).
+
+repository/: CRUD-операции (например, UserRepository::GetById).
+
+4. Аутентификация (auth/)
+auth_service.h:
+
+cpp
+class AuthService {
+public:
+    bool Register(const std::string& email, const std::string& password);
+    std::string Login(const std::string& email, const std::string& password);
+    bool ValidateToken(const std::string& token);
+};
+jwt.h: Генерация/верификация JWT-токенов (библиотека вроде jwt-cpp).
+
+5. Чат (chat/)
+chat_manager.h:
+
+cpp
+class ChatManager {
+    std::unordered_map<ChatId, std::vector<UserId>> active_chats;
+public:
+    void CreateChat(ChatType type, const std::vector<UserId>& members);
+    void SendMessage(ChatId chat_id, const Message& msg);
+};
+dm_chat.h: Логика личных сообщений (проверка прав доступа).
+
+group_chat.h: Управление групповыми чатами (приглашения, роли).
